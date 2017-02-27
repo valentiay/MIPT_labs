@@ -1,0 +1,368 @@
+<html>
+	<header>
+		<title>Stat</title>
+		<script src = "jquery-3.1.0.min.js"></script>
+	</header>
+	<body>
+		<canvas id= "can" width="1000" height="600" style="float:left; border:solid silver 1px; margin: 25px calc(50% - 500px)" />
+		<script type="text/javascript" >
+			$(document).ready(function () {
+				var canvas = document.getElementById('can');
+				var context = canvas.getContext("2d");
+				context.fillRect(0,0,1000,600);
+				context.strokeStyle = "#ffa500";
+				context.strokeRect(1.5,1.5,997,597);
+				context.font = "23px sans-serif";
+				context.fillStyle = "#ffa500";
+				context.fillText("2 - Гистограмма; 3 - Отклонение; 4 - Лог. откл; 5 - Среднее зн; 6 - Сл. Вел; 7 - Результаты", 25, 575);
+				
+				function gauss(){
+						var ready = false;
+						var second = 0.0;
+						
+						this.next = function(mean, dev){
+							mean = mean == undefined ? 0.0 : mean;
+							dev = dev == undefined ? 1.0 : dev;
+							
+							if(this.ready){
+								this.ready = false;
+								return this.second * dev + mean;
+							}
+							else{
+								var u,v,s;
+								do{
+									u = 2.0 * Math.random() - 1.0;
+									v = 2.0 * Math.random() - 1.0;
+									s = u*u + v*v;
+								}while(s > 1.0 || s == 0.0);
+								var r = Math.sqrt(-2.0 * Math.log(s) / s);
+								this.second = r * u;
+								this.ready = true;
+								return r * v * dev + mean;
+							}
+						}
+					}
+					
+				ga = new gauss();
+				
+				function gist () {
+					context.fillStyle = "#ffa500";
+					context.font = "50px sans-serif";
+					context.fillText("Гистограмма", 300,70);
+					context.font = "15px sans-serif";
+					context.fillText("Доля", 12.5, 110);
+					context.fillText("Част / 10с", 900, 505);
+					var i,k = 1;
+					var b = new Array();
+					for (i=0; i<=aMax; i++){
+						b[i]=0;
+					}
+					for (i=0; i<=n; i++){
+						b[a[i]]++;
+						if (b[a[i]] > k){
+							k = b[a[i]];
+						}
+					}
+					var v = 300/(k);
+					var d = 750/(aMax + 2);
+					context.fillStyle = "#ffa500";
+					for (i=0; i<=aMax; i++){
+						context.fillRect(i*d + 75,500 - b[i] * v,d,b[i]*v);
+					}
+					
+					for (i=0; i<=k; i++){
+						//console.log(i % Math.floor(k / 10) + " " + (k / 10) + " " + k);
+						if(i % (Math.floor(k / 10) + 1) == 0){
+							context.fillText("" + Math.floor(1000*i/n)/1000, 5, 500 - i*v);
+						}
+					}
+					context.fillText("" + 0, 75, 520);
+					for (i=1; i<aMax; i++){
+						if(i % Math.floor(aMax / 10) == 0){
+							context.fillText("" + i, i*d + 75, 520);
+						}
+					}
+				}
+				
+				function sred(){
+					context.fillStyle = "#ffa500";
+					context.font = "50px sans-serif";
+					context.fillText("Среднее значение", 200,70);
+					context.font = "15px sans-serif";
+					context.fillText("Среднее зн.", 12.5, 110);
+					context.fillText("Кол. измерений", 870, 505);
+					
+					context.strokeStyle = "#ffa500"
+					var v = 350/( midMax - midMin + 10);
+					var d = 750/(n + 2); 
+					context.beginPath();
+					context.moveTo(55, 500 - mid[1]*v);
+					for (i=0; i<n; i++){
+						context.lineTo((i+1)*d + 75, 500 - mid[i+1]*v + midMin*v - 20);//context.fillRect(i*d + 55,500 - mid[i] * v,d,mid[i]*v);
+					}
+					context.stroke();
+					context.beginPath();
+					context.fillStyle = "#ffa500"
+					
+					for (i=Math.floor(midMin); i<midMax + 2; i++){
+						if(i % 2 == 0){
+							context.fillText("" + i, 15, 500 - i*v + midMin*v - 20);
+						}
+					}
+					context.fillText("" + 0, 75, 520);
+					for (i=1; i<n; i++){
+						if(i % Math.floor(n / 10) == 0){
+							context.fillText("" + i, i*d + 75, 520);
+						}
+					}
+				}
+				
+				function otkl () {
+					context.fillStyle = "#ffa500";
+					context.font = "50px sans-serif";
+					context.fillText("Отклонение", 200,70);
+					context.font = "15px sans-serif";
+					context.fillText("Отклонение", 12.5, 110);
+					context.fillText("Номер измерения", 870, 505);
+					
+					var v = 350/(flucMax);
+					var d = 750/(n + 2); 
+					context.beginPath();
+					context.moveTo(75, 500 - fluc[0]*v); 
+					for (i=0; i<n; i++){
+						context.lineTo((i+1)*d + 75, 500 - fluc[i]*v - 20);//context.fillRect(i*d + 55,500 - mid[i] * v,d,mid[i]*v);
+					}
+					context.strokeStyle = "#ffa500";
+					context.stroke();
+					context.fillStyle = "#ffa500"
+					
+					for (i=0; i<Math.floor(flucMax) + 1; i++){
+							context.fillText("" + i, 15, 500 - i*v - 20);
+					}
+					
+					context.fillText("" + 0, 75, 520);
+					for (i=1; i<n; i++){
+						if(i % Math.floor(n / 10) == 0){
+							context.fillText("" + i, i*d + 75, 520);
+						}
+					}
+				}
+				
+				function otklLog () {
+					context.fillStyle = "#ffa500";
+					context.font = "50px sans-serif";
+					context.fillText("Лог. отклонение", 250,70);
+					context.font = "15px sans-serif";
+					context.fillText("Лог. откл.", 12.5, 110);
+					context.fillText("Лог. числа изм.", 870, 505);
+					
+					var v = 350/(flucLogMax - flucLogMin);
+					var d = 750/(Math.log(n) - Math.log(1)); 
+					context.beginPath();
+					context.moveTo(75, 500 - flucLog[0]*v); 
+					for (i=0; i<n; i++){
+						context.lineTo((Math.log(i))*d + 75, 480 - flucLog[i]*v + flucLogMin*v);
+					}
+					context.strokeStyle = "#ffa500";
+					context.stroke();
+					context.fillStyle = "#ffa500"
+					
+					for (i=flucLogMin; i<flucLogMax; i++){
+							context.fillText("" + Math.floor(i*100)/100, 10, 480 - i*v + flucLogMin*v);
+					}
+					
+					context.fillText("" + 0, 75, 520);
+					for (i=Math.log(1); i<Math.log(n); i=i+1){
+						context.fillText("" + Math.floor(i*100)/100, i*d + 75, 520);
+					}
+				}
+				
+				function ran () {
+					context.fillStyle = "#ffa500";
+					context.font = "50px sans-serif";
+					context.fillText("Случайная величина", 200,70);
+					context.font = "15px sans-serif";
+					context.fillText("Значение", 12.5, 110);
+					context.fillText("Номер измерения", 870, 505);
+					
+					var v = 350/(aMax + 1);
+					var d = 750/(n + 2); 
+					context.beginPath();
+					context.moveTo(75, 500 - a[0]*v);
+					for (i=0; i<n; i++){
+						context.lineTo((i+1)*d + 75, 500 - a[i]*v - 20);
+					}
+					context.strokeStyle = "#ffa500";
+					context.stroke();
+					context.fillStyle = "#ffa500"
+					
+					for (i=0; i<aMax + 2; i++){
+						if(i % (Math.floor(aMax / 10)) == 0){
+							context.fillText("" + i, 15, 500 - i*v - 20);
+						}
+					}
+					context.fillText("" + 0, 75, 520);
+					for (i=1; i<n; i++){
+						if(i % Math.floor(mid.length / 10) == 0){
+							context.fillText("" + i, i*d + 75, 520);
+						}
+					}
+				}
+				
+				function cls(){
+					context.fillStyle = "#000";
+					context.fillRect(3, 3, 994, 550);
+					
+					context.beginPath();
+					context.moveTo(47.5, 133.5);
+					context.lineTo(50.5, 130.5);
+					context.lineTo(53.5, 133.5);
+					context.moveTo(50.5, 130.5);
+					context.lineTo(50.5, 500.5);
+					context.lineTo(850.5, 500.5);
+					context.lineTo(847.5, 497.5);
+					context.moveTo(850.5, 500.5);
+					context.lineTo(847.5, 503.5);
+					context.stroke();
+				}
+				
+				function results () {
+					var sred = (Math.abs(Math.round(10*fluc[n])/10 - fluc[n])/fluc[n] < 0.2)?(Math.round(10*mid[n])/10):Math.round(100*mid[n])/100;
+					var pogr = (Math.abs(Math.round(10*fluc[n])/10 - fluc[n])/fluc[n] < 0.2)?(Math.round(10*fluc[n])/10):Math.round(100*fluc[n])/100;
+					context.fillStyle = "#000";
+					context.fillRect(250, 140, 500, 270);
+					context.strokeStyle = "#ffa500";
+					context.strokeRect(250, 140, 500, 270);
+					context.fillStyle = "#ffa500";
+					context.textAlign = "center";
+					context.font = "15px sans-serif";
+					context.fillText("Время " + 10*n, 500, 200);
+					context.fillText("Интервал измерения 10 сек", 500, 215);
+					context.fillText('Полное число частиц ' + Math.floor(mid[n]*n), 500, 230);
+					context.fillText('Среднее число частиц за 1 измерение ' + sred, 500, 245);
+					context.fillText('Стандартная ошибка N среднего ' + pogr, 500, 260);
+					
+					context.fillText('Стандартная ошибка 1 измерения ' + Math.floor(fluc[n]*Math.sqrt(n)*100)/100, 500, 275);
+					
+					var counter = 0;
+					for(i=0;i<=n;i++){
+						if(Math.abs(mid[n] - a[i]) <= fluc[n]*Math.sqrt(n)){
+							counter++;
+						}
+					}
+					context.fillText('Количество измерений в интервале 1 сигма ' + (counter) + " (" + Math.floor(counter / 4) + "%)", 500, 290);
+					
+					counter = 0;
+					for(i=0;i<=n;i++){
+						if(Math.abs(mid[n] - a[i]) <= 2*fluc[n]*Math.sqrt(n)){
+							counter++;
+						}
+					}
+					context.fillText('Количество измерений в интервале 2 сигма ' + (counter) + " (" + Math.floor(counter / 4) + "%)", 500, 305);
+					
+					counter = 0;
+					for(i=0;i<=n;i++){
+						if(Math.abs(mid[n] - a[i]) <= 3*fluc[n]*Math.sqrt(n)){
+							counter++;
+						}
+					}
+					context.fillText('Количество измерений в интервале 3 сигма ' + (counter) + " (" + Math.floor(counter / 4) + "%)", 500, 320);
+					
+					context.fillText('Итак,', 500, 335);
+					context.fillText('за 10с. счетчик регистрирует ' + sred + ' ± ' + pogr + ' частиц' , 500, 350);
+					context.textAlign = "left";
+					console.log(mid[n]);
+					console.log(fluc[n]);
+				}
+				
+				var i = 0;
+				var a = new Array();
+				var n = 0;
+				var foo = gist;
+				var mid = new Array(); mid[0] = 0;
+				var midMax = 2, midMin = 100;
+				var aMax = 1;
+				var fluc = new Array(); fluc[0] = 0;
+				var flucMax = 0;
+				var flucLog = new Array();
+				var flucLogMax = 0, flucLogMin = 100;
+					
+				cls();
+				n=1;
+				gist();
+				n=0;
+				var timeout = setTimeout(function (){
+					var accel = prompt('Введите ускорение:');
+					
+					var result = setInterval(function () {	
+						cls();
+						n++;
+						a[n]=Math.abs(Math.floor(ga.next(15, 7)));
+						
+						if (a[n] > aMax){
+							aMax = a[n];
+						}
+						
+						mid[n] = mid[n-1]*(n)/(n+1) + a[n]/(n+1);
+						if (mid[n] > midMax){
+							midMax = mid[n];				
+						}
+						if (mid[n] < midMin){
+							midMin = mid[n];
+						}
+
+						fluc[n] = 0;
+						for (i=1; i<n; i++){
+							fluc[n] = fluc[n] + (a[i] - mid[i])*(a[i] - mid[i]);
+						}
+						fluc[n] = Math.sqrt(fluc[n])/n;
+						if (fluc[n] > flucMax){
+							flucMax = fluc[n];
+						}
+						
+						flucLog[n] = Math.log(fluc[n]);
+						if (flucLog[n] > flucLogMax){
+							flucLogMax = flucLog[n];
+						}
+						if ((flucLog[n] < flucLogMin) && (flucLog[n] != -Infinity)){
+							flucLogMin = flucLog[n];
+						}
+						foo();
+						if (n == 400){
+							clearInterval(result);
+							results();
+						}
+					}, 10000/accel);
+				}, 100);
+			
+				$('html').keypress(function (e) {
+					switch(e.which){
+						case 50: cls();
+								gist();
+								foo = gist;
+						break;
+						case 51: cls();
+								otkl();
+								foo = otkl;
+						break;
+						case 52: cls(); 
+								otklLog();
+								foo = otklLog;
+						break;
+						case 53: cls(); 
+								sred();
+								foo = sred;
+						break;
+						case 54: cls();
+								ran();
+								foo = ran;
+						break;
+						case 55: results();
+								foo = results;
+					}
+				});
+				
+			});
+		</script>
+	</body>
+</html>
