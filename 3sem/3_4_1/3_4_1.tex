@@ -1,0 +1,64 @@
+\documentclass{article}
+
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[T1, T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english, russian]{babel}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{makecell}
+
+\geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+
+\author{Александр Валентинов}
+\title{Лабораторная работа 3.4.1}
+
+\begin{document}
+   \subsection*{Работа 3.4.1}
+   \section*{Диа- и парамагнетики}
+   \paragraph*{Цель работы:} измерение магнитной восприимчивости диа- и парамагнитного образцов.
+   \paragraph*{В работе используются:} электромагнит, аналитические весы, милливеберметр, амперметр постоянного тока, реостат, образцы.
+   \subsubsection*{Экспериментальная установка}
+   \begin{figure}[h]
+   \centering
+   \includegraphics[width=8cm]{fig1.jpg} 
+   \caption{Схема экспериментальной установки} 
+   \label{fig.1} 
+   \end{figure}
+   \subparagraph*{Обработка результатов}
+   Построим график $B(I)$ (Рисунок \ref{plot.1}, таблица \ref{table.1}), чтобы определять величину магнитной индукции по току. Будем считать $B$ по формуле
+   \[ B = \frac{\Phi}{SN},~~ \sigma_b = \sqrt{\left(\frac{\sigma_\Phi}{SN}\right)^2 + \left( \frac{\Phi}{SN} \frac{\sigma_{SN}}{SN} \right)^2}. \]
+   \begin{figure}[h]
+   \centering
+   \includegraphics[width=16cm]{plot1.png} 
+   \caption{Зависимость $B(I)$} 
+   \label{plot.1} 
+   \end{figure}
+   \input{Table1}
+   Найдем зависимость $\Delta P(B^2)$, чтобы найти магнитную восприимчивость веществ.
+   \[ \sigma_{B^2} = 2B\sigma_B \]
+
+   \[ k_{Al} = \left(-\frac{\chi s}{2\mu_0}\right)_{Al} =  -4.30 \pm 0.08 \frac{\text{кг}\cdot\text{м}}{\text{с}^2 \cdot \text{мТл}^2},~~  k_{Cu} = 2.24 \pm 0.08 \frac{\text{кг}\cdot\text{м}}{\text{с}^2 \cdot \text{мТл}^2} \]
+
+   \[ \chi =  -\frac{2k\mu_0}{s},~~ \sigma_\chi = \frac{2k\mu_0}{s^2}\sigma_s,~~ s = \pi \frac{d^2}{4},~~ \sigma_s = \frac{\pi d \sigma_d}{2} \]
+
+   \[ \chi_{Al} = (0.16 \pm 0.03) \cdot 10^{-6},~~ \chi_{Cu} = (-0.073 \pm 0.007) \cdot 10^{-6} \]
+   Полученные значения сходятся с табличными по порядку величины.
+   \input{Table2}
+   \paragraph*{Вывод:} В ходе работы мы нашли магнитные восприимчивости алюминия и меди.
+   \begin{figure}[h]
+   \centering
+   \includegraphics[width=12cm]{plot2.png} 
+   \caption{Зависимость $|\Delta P|(B^2)$} 
+   \label{plot.2} 
+   \end{figure}
+\end{document}
