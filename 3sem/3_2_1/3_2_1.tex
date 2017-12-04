@@ -1,0 +1,123 @@
+\documentclass{article}
+
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[T1, T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english, russian]{babel}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{mwe}
+
+\geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+
+\author{Александр Валентинов}
+\title{Лабораторная работа 3.2.4}
+
+\begin{document}
+   \subsection*{Работа 3.2.1}
+   \section*{Сдвиг фаз в цепи переменного тока.}
+   
+   \paragraph{Цель работы} изучить влияние активного сопротивления, индуктивности и емкости на сдвиг фаз между током и напряжением в цепи переменного тока.
+   
+   \paragraph{В работе используются:} генератор звуковой частоты, двузканальной осциллограф, магазин емкостей, магазин соаротивлений катушка индуктивности, резисторы, мост переменного тока.
+
+   \subsubsection*{Теория}
+   Циклическая частота: \[ \Omega = 2\pi\nu. \]
+   Реактивное сопротивление емкости: \[ Z = \frac{1}{\Omega C}. \]
+   Реактивное сопротивление индуктивности: \[ Z = \Omega L. \]
+   Сдвиг фаз между синусоидами на двухканальном осциллографе: 
+   \begin{equation}
+   \label{psi} 
+   \psi = \pi \cdot \frac{x}{x_0},~~~ \sigma_\psi = \pi\sqrt{\left( \frac{\sigma_x}{x_0} \right)^2 + \left( \frac{x}{x_0} \frac{\sigma_{x_0}}{x_0} \right)^2};
+   \end{equation}
+   где $x$ --- расстояния между нулевыми значениями синусоид, $x_0$ --- расстояния между нулевыми значениями одного из сигналов. 
+
+   \subsubsection*{Экспериментальная установка:}   
+  % \begin{figure}[h!]
+  %     \centering
+  %     \includegraphics[height=.2\textwidth]{fig1.jpg}
+  %     \includegraphics[height=.2\textwidth]{fig2.jpg}
+  %     \caption{Блабла}
+  % \end{figure}
+
+   \begin{figure}[h]
+   \centering
+   \includegraphics[width=8cm]{fig3.jpg} 
+   \caption{Схема установки для исследования сдвига фаз между током и напряжением.} 
+   \label{fig.1} 
+   \end{figure}
+
+   \begin{figure}[h]
+   \centering
+   \includegraphics[width=8cm]{fig4.jpg} 
+   \caption{Схема установки для исследования фазовращателя.} 
+   \label{fig.4} 
+   \end{figure}
+   
+   \subsubsection*{Обработка результатов}
+   \subparagraph*{RC-цепь.}
+   Построим график $\tan \psi = f[1 / (\Omega C R_{\Sigma})] \equiv f(X)$, где $R_\Sigma = R + r$. Теоретический график будет иметь коэффициент наклона 1 и пересечение с осью $\tan \psi$ в точке $0$. Рассчитаем $\psi$ по формуле \eqref{psi}. Результаты в таблице \ref{RCtable} и на рисунке \ref{plot1}.
+
+   \input{Table1.tex}
+   \begin{figure}[h]
+   \centering
+   \includegraphics[width=8cm]{plot1.png} 
+   \caption{Зависимость $\tan \psi (X)$} 
+   \label{plot1} 
+   \end{figure}
+
+   Коэффициент наклона графика: $1.03 \pm 0.04$, что сходится с теорией.
+
+   \subparagraph*{RL-цепь.}
+   Построим график $\tan \psi = f[\Omega L / R_{\Sigma}] \equiv f(Y)$, где $R_\Sigma = R + r + R_L$. Теоретический график будет иметь коэффициент наклона 1 и пересечение с осью $\tan \psi$ в точке $0$. Рассчитаем $\psi$ по формуле \eqref{psi}. Результаты в таблице \ref{RLtable} и на рисунке \ref{plot2}.
+
+   \input{Table2.tex}
+   \begin{figure}[h]
+   \centering
+   \includegraphics[width=8cm]{plot2.png} 
+   \caption{Зависимость $\tan \psi (X)$} 
+   \label{plot2} 
+   \end{figure}
+   Коэффициент наклона графика: $1.04 \pm 0.05$, что сходится с теорией.
+
+   \subparagraph*{RLC-цепь.}
+   Построим графики $| \psi | = f(\nu / \nu_0)$ для $R = 0$ и $R = 100$. Выберем масштаб оси $\psi$ $\pi / 16$. Результаты в таблицах \ref{RLCtable1}, \ref{RLCtable2} и на рисунке \ref{plot3}.
+
+   \input{Table3.tex}
+   \input{Table4.tex}
+   \begin{figure}[h]
+   \centering
+   \includegraphics[width=8cm]{plot3.png} 
+   \caption{Зависимость $| \psi | = f(\nu / \nu_0)$} 
+   \label{plot3} 
+   \end{figure} 
+
+   Рассчитаем добротности по графикам:
+   \[
+     Q_{R = 0} = 1/(1.10 - 0.92) = 5.56,~~~ Q_{R = 100} = 1/(1.24 - 0.78) = 2.17
+   \]
+   Рассчитаем добротности по формуле
+   \[
+     Q = \frac{1}{R}\sqrt{\frac{L}{C}}
+   \]~\[
+     Q_{R = 0}^{\text{теор}} = 9.56,~~~ Q_{R = 100}^{\text{теор}} = 2.37
+   \]
+   Теоретические значения больше полученных экспериментально, т.к. они не учитывают сопротивление соединительных проводов, а также эффекты, возникающие в катушке и конденсаторе.
+
+   \begin{figure}[h]
+   \centering
+   \includegraphics[width=4cm]{fig5.png} 
+   \caption{Векторная диаграмма фазовращателя} 
+   \label{fig1} 
+   \end{figure} 
+\end{document}
