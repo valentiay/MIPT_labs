@@ -1,0 +1,137 @@
+\documentclass{article}
+
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[T1, T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english, russian]{babel}
+\usepackage{graphics}
+\usepackage{graphicx}
+
+\geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+
+\author{Александр Валентинов}
+\title{Лабораторная работа 3.6.1}
+
+\begin{document}
+   \subsection*{Работа 3.2.6}
+   \section*{Исследование гальванометра}
+   
+   \paragraph{Цель работы:} изучение работы высокочувствительного зеркального гальванометра магнитоэлектрической системы в режимах измерения постоянного тока и электрического заряда.
+   
+   \paragraph{В работе используются:} зеркальный гальванометр с осветителем и шкалой, источник постоянного напряжения, делитель напряжения, магазин сопротивлений, эталонный конденсатор, вольтметр, преключатель, ключи, линейка.
+
+   \subsubsection*{Установка.}
+   \begin{figure}[h]
+   \centering
+   \includegraphics[width=10cm]{fig1.jpg} 
+   \caption{Схема установки для работы гальванометра в стационарном режиме.} 
+   \label{fig.1} 
+   \end{figure}
+
+   \begin{figure}[h]
+   \centering
+   \includegraphics[width=7cm]{fig2.jpg} 
+   \caption{Схема установки для определения баллистической постоянной.} 
+   \label{fig.2} 
+   \end{figure}
+
+   \subsubsection*{Теория.}
+   Сила тока, протекающего через гальванометр в стационарном режиме:
+   \begin{equation}
+   \label{fl.1}
+   I = U_0 \frac{R_1}{R_2}\frac{1}{R + R_0}.
+   \end{equation}
+   Динамическая постоянная:
+   \begin{equation}
+   \label{fl.2}
+   C_I = \frac{I}{\varphi} = \frac{2aI}{x}, \quad \sigma_{C_I} = \sqrt{\left( \frac{I}{x}\sigma_{2a} \right)^2 + \left( 2a \sigma_{\frac{I}{x}} \right)^2}.
+   \end{equation}
+   Логарифмический декремент затухания:
+   \begin{equation}
+   \label{fl.3}
+   \Theta = \ln \frac{x_n}{x_{n + 1}}, \quad \sigma_\Theta = \sqrt{\left(\frac{\sigma_{x_n}}{x_n}\right)^2 + \left( \frac{\sigma_{x_{n + 1}}}{x_{n + 1}} \right)^2}.
+   \end{equation}
+   Критическое сопротивление ($X = (R_0 + R)^2$, $Y = 1 / \Theta^2$):
+   \begin{equation}
+   \label{fl.4}
+   R_{\text{кр}} = \frac{1}{2\pi}\sqrt{\frac{\Delta X}{\Delta Y}} - R_0, \quad \sigma_{R_\text{кр}} = \frac{1}{4\pi} \sqrt{\frac{\Delta Y}{\Delta X}} \cdot \sigma_{\frac{\Delta X}{\Delta Y}}.
+   \end{equation}
+   Баллистическая постоянная:
+   \begin{equation}
+   \label{fl.5}
+   C_{Q_\text{кр}} = 2a \frac{R_1}{R_2} \frac{U_0 C}{l_{max}^\text{кр}}
+   \end{equation}
+   \subsubsection*{Обработка результатов.}
+   Рассчитаем ток через гальванометр в стационарном режиме по формуле \eqref{fl.1}. Построим график $I(x)$ (таблица \ref{table1}, рисунок \ref{plot.1}. С его помощью найдем динамическую постоянную по формуле \eqref{fl.2}. Заметим, что погрешность измерения $R$ и $R_0$ пренебрежимо мала по сравнению с $x$.
+   \[
+      \frac{I}{x} = (22.8 \pm 0.5) \cdot 10^{-6} \text{ А}/\text{м}
+   \]
+   \[
+      C_I = (0.0501 \pm 0.0016) \frac{\text{А}}{\text{ мм}/\text{м}}.
+   \]
+
+   \input{Table1}
+   \begin{figure}[h]
+   \centering
+   \includegraphics[width=12cm]{plot1.png} 
+   \caption{Зависимость $I(x)$.} 
+   \label{plot.1} 
+   \end{figure}
+
+   Рассчитаем логарифмический декремент затухания по формуле \eqref{fl.3}. Построим график $1/\Theta^2 = f\left[ (R + R_0)^2 \right]$ (таблица \ref{table2}, рисунок \ref{plot.2}). Рассчитаем погрешность $1 / \Theta^2$ по формуле
+   \[
+       \sigma_{1/\Theta^2} = \frac{\sigma_\Theta}{\Theta^3}.
+   \]
+   Погрешность $R$ и $R_0$ пренебрежимо мала. С помощью графика рассчитаем критическое сопротивление, пользуясь формулой \eqref{fl.4}.
+   \[
+      \frac{\Delta X}{\Delta Y} = 1 / \frac{\Delta Y}{\Delta X}, \quad \sigma_{\frac{\Delta X}{\Delta Y}} = \sigma_{\frac{\Delta Y}{\Delta X}} / \left(\frac{\Delta Y}{\Delta X}\right)^2.
+   \]
+   \[
+      \frac{\Delta Y}{\Delta X} = (0.0194 \pm 0.0007) \text{ кОм}^{-2}
+   \]
+   \[
+      R_{\text{кр}} = (860 \pm 30) \text{ Ом}
+   \]
+
+   \input{Table2}
+   \begin{figure}[h]
+   \centering
+   \includegraphics[width=12cm]{plot2.png} 
+   \caption{Зависимость $1 / \Theta^2\left[ (R_0 + R)^2 \right]$.} 
+   \label{plot.2} 
+   \end{figure}
+
+   Рассчитаем критическое сопротивление для баллистического режима. Для этого построим график $l_{max}\left[ (R + R_0)^{-1} \right]$ (таблица~\ref{table3}, рисунок~\ref{plot.3}), учтем, что отклонение зайчика в критическом режиме в $e$ раз меньше, чем в режиме без затухания. Отклонение в режиме без затухания $l_{max}^0 = (23.6  \pm 0.1)\text{ см}$, значит в критическом режиме $l_{max}^\text{кр} = (8.68 \pm 0.04)\text{ см}$. Коэффициент наклона графика $k = (-19.5 \pm 0.6)\text{ см}\cdot\text{кОм}$.
+   \[
+       R_\text{кр} = \frac{k}{l_{max}^\text{кр} - l_{max}^0} - R_0, 
+   \] 
+   \[
+      R_\text{кр} = (1020 \pm 30) \text{ Ом}
+   \]
+   
+   \input{Table3}
+   \begin{figure}[h]
+   \centering
+   \includegraphics[width=12cm]{plot3.png} 
+   \caption{Зависимость $l_{max}\left[ (R + R_0)^{-1} \right]$.} 
+   \label{plot.3} 
+   \end{figure}
+
+   Значения, полученные подбором, в стационарном и баллистическом режиме совпадают.
+
+   Рассчитаем баллистическую постоянную по формуле \eqref{fl.5}:
+   \[
+      C_{Q_\text{кр}} = (0.0100 \pm 0.0003) \frac{\text{К}}{\text{мм} / \text{м}}.
+   \]
+
+   Время релаксации $ t = R_0 C = 560 \text{ мкс} \ll T = 5 \text{ с}$
+\end{document}
